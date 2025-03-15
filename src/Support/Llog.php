@@ -27,7 +27,12 @@ class Llog
         $channel = config('logger.tracking.default');
         $modelClass = ucfirst($model->getMorphClass());
 
-        Log::channel($channel)->info("{$modelClass} {$action} - {$model->id}", $context);
+        Log::channel($channel)->info(json_encode([
+            'id' => $model->id,
+            'model' => $modelClass,
+            'action' => $action,
+            'data' => $context,
+        ]));
     }
 
     protected function writeLog(string $method, string $message = null, array $context = [])

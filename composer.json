@@ -10,6 +10,11 @@
             "email": "ka4ivan.dev@gmail.com",
             "role": "Architect & Developer",
             "homepage": "https://github.com/ka4ivan"
+        },
+        {
+            "name": "Raphaël Huchet",
+            "role": "Log Viewer Base",
+            "homepage": "https://github.com/rap2hpoutre"
         }
     ],
     "type": "library",
