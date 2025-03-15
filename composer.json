@@ -1,0 +1,35 @@
+{
+    "name": "ka4ivan/laravel-logger",
+    "description": "A Laravel package for advanced logging, providing structured logs, contextual information, and customizable log channels.",
+    "keywords": [
+        "laravel", "logging", "logger", "log", "monitoring", "debugging", "log-management", "error-tracking", "model-changes", "model-tracking"
+    ],
+    "authors": [
+        {
+            "name": "Kachula Ivan",
+            "email": "ka4ivan.dev@gmail.com",
+            "role": "Architect & Developer",
+            "homepage": "https://github.com/ka4ivan"
+        }
+    ],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0.2",
+        "illuminate/support": "^9.0|^10.0|^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ka4ivan\\LaravelLogger\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ka4ivan\\LaravelLogger\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
