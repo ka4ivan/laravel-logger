@@ -2,6 +2,7 @@
 
 namespace Ka4ivan\LaravelLogger\Support;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
 class Llog
@@ -21,6 +22,14 @@ class Llog
         $this->writeLog('error', $message, $context);
     }
 
+    public function track(Model $model, string $action, array $context = [])
+    {
+        $channel = config('logger.tracking.default');
+        $modelClass = ucfirst($model->getMorphClass());
+
+        Log::channel($channel)->info("{$modelClass} {$action} - {$model->id}", $context);
+    }
+
     protected function writeLog(string $method, string $message = null, array $context = [])
     {
         $logMessage = $message ? "Message: {$message}" : '';
@@ -33,6 +42,8 @@ class Llog
             $logMessage .= $logMessage ? ". {$callerInfo}" : $callerInfo;
         }
 
-        Log::{$method}($logMessage, $context);
+        $channel = config('logger.default');
+
+        Log::channel($channel)->{$method}($logMessage, $context);
     }
 }

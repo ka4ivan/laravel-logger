@@ -13,6 +13,12 @@
 composer require ka4ivan/laravel-logger
 ```
 
+2) Publish package resource:
+```shell
+php artisan vendor:publish --provider="Ka4ivan\LaravelLogger\ServiceProvider"
+```
+
+
 ### License
 
 This package is licensed under the [MIT License](https://opensource.org/licenses/MIT). You can freely use, modify, and distribute this package, provided that you include a copy of the license in any redistributed software.
