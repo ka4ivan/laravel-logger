@@ -10,13 +10,14 @@ trait HasTracking
 {
     protected static function bootHasTracking()
     {
-        $user = auth()->user()->only(config('logger.user.fields'));
+        $user = auth()->user();
+        $url = request()->url();
 
-        static::creating(function ($model) use ($user) {
-            Llog::track($model, 'created', [$model, 'auth' => $user]);
+        static::creating(function ($model) use ($user, $url) {
+            Llog::track($model, 'created', $url, $user, ['model' => $model]);
         });
 
-        static::updating(function ($model) use ($user) {
+        static::updating(function ($model) use ($user, $url) {
             $changes = $model->getDirty();
             $original = $model->getOriginal();
 
@@ -30,12 +31,12 @@ trait HasTracking
                     ];
                 }
 
-                Llog::track($model, 'updated', ['changes' => $modelChanges, 'auth' => $user]);
+                Llog::track($model, 'updated', $url, $user, ['changes' => $modelChanges]);
             }
         });
 
-        static::deleting(function ($model) use ($user) {
-            Llog::track($model, 'deleted', ['auth' => $user]);
+        static::deleting(function ($model) use ($user, $url) {
+            Llog::track($model, 'deleted', $url, $user);
         });
     }
 }

@@ -64,7 +64,6 @@ class LogViewerController extends \Illuminate\Routing\Controller
             'standardFormat' => true,
             'structure' => $this->log_viewer->foldersAndFiles(),
             'storage_path' => $this->log_viewer->getStoragePath(),
-
         ];
 
         if ($this->request->wantsJson()) {

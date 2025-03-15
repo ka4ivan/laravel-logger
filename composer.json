@@ -26,7 +26,10 @@
     "autoload": {
         "psr-4": {
             "Ka4ivan\\LaravelLogger\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {

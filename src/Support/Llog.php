@@ -22,7 +22,7 @@ class Llog
         $this->writeLog('error', $message, $context);
     }
 
-    public function track(Model $model, string $action, array $context = [])
+    public function track(Model $model, string $action, string $url = null, Model $user = null, array $context = [])
     {
         $channel = config('logger.tracking.default');
         $modelClass = ucfirst($model->getMorphClass());
@@ -31,24 +31,28 @@ class Llog
             'id' => $model->id,
             'model' => $modelClass,
             'action' => $action,
+            'url' => $url,
+            'user' => $user,
             'data' => $context,
         ]));
     }
 
     protected function writeLog(string $method, string $message = null, array $context = [])
     {
-        $logMessage = $message ? "Message: {$message}" : '';
-
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
 
         if (isset($backtrace[2])) {
             $caller = $backtrace[2];
-            $callerInfo = "Called from {$caller['file']}: {$caller['line']}";
-            $logMessage .= $logMessage ? ". {$callerInfo}" : $callerInfo;
+            $callerInfo = " at {$caller['file']}: {$caller['line']}";
+            $message .= $callerInfo;
         }
 
         $channel = config('logger.default');
 
-        Log::channel($channel)->{$method}($logMessage, $context);
+        Log::channel($channel)->{$method}(json_encode([
+            'message' => $message,
+            'data' => $context,
+            'user' => auth()->user(),
+        ]));
     }
 }
