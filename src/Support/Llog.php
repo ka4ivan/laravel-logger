@@ -140,15 +140,15 @@ class Llog
         $logMessage = is_string($message) ? $message : '';
         $context = is_array($message) ? array_merge($context, $message) : $context;
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        $caller = null;
 
         if (isset($backtrace[2])) {
             $caller = $backtrace[2];
-            $callerInfo = " at {$caller['file']}: {$caller['line']}";
-            $logMessage .= $callerInfo;
         }
 
         Log::channel($channel)->{$method}(json_encode([
             'message' => $logMessage,
+            'caller' => "{$caller['file']}: {$caller['line']}",
             'data' => $context,
             'ip' => request()->ip(),
             'user' => auth()->user(),
