@@ -13,11 +13,11 @@ trait HasTracking
         $url = request()->url();
         $ip = request()->ip();
 
-        static::creating(function ($model) use ($url, $ip) {
+        static::creating(function($model) use ($url, $ip) {
             Llog::track($model, 'created', $url, $ip, auth()->user(), ['model' => $model]);
         });
 
-        static::updating(function ($model) use ($url, $ip) {
+        static::updating(function($model) use ($url, $ip) {
             $changes = $model->getDirty();
             $original = $model->getOriginal();
 
@@ -35,7 +35,7 @@ trait HasTracking
             }
         });
 
-        static::deleting(function ($model) use ($url, $ip) {
+        static::deleting(function($model) use ($url, $ip) {
             Llog::track($model, 'deleted', $url, $ip, auth()->user());
         });
     }
