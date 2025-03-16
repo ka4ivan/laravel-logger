@@ -7,21 +7,116 @@ use Illuminate\Support\Facades\Log;
 
 class Llog
 {
-    public function info(string $message = null, array $context = []): void
+    /**
+    * Logs emergency-level messages: system is unusable.
+    *
+    * @param string|null $message
+    * @param array $context
+    */
+    public function emergency(string $message = null, array $context = []): void
     {
-        $this->writeLog('info', $message, $context);
+        $this->writeLog('emergency', $message, $context);
     }
 
-    public function warning(string $message = null, array $context = []): void
+    /**
+     * Logs alert-level messages: action must be taken immediately.
+     * Example: Entire website down, database unavailable, etc.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
+    public function alert(string $message = null, array $context = []): void
     {
-        $this->writeLog('warning', $message, $context);
+        $this->writeLog('alert', $message, $context);
     }
 
+    /**
+     * Logs critical-level messages: application component unavailable, unexpected exception, etc.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
+    public function critical(string $message = null, array $context = []): void
+    {
+        $this->writeLog('critical', $message, $context);
+    }
+
+    /**
+     * Logs error-level messages: runtime errors that do not require immediate action but should be monitored.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
     public function error(string $message = null, array $context = []): void
     {
         $this->writeLog('error', $message, $context);
     }
 
+    /**
+     * Logs warning-level messages: exceptional occurrences that are not errors but may require attention.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
+    public function warning(string $message = null, array $context = []): void
+    {
+        $this->writeLog('warning', $message, $context);
+    }
+
+    /**
+     * Logs notice-level messages: normal but significant events.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
+    public function notice(string $message = null, array $context = []): void
+    {
+        $this->writeLog('notice', $message, $context);
+    }
+
+    /**
+     * Logs info-level messages: interesting events like user logins, SQL logs, etc.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
+    public function info(string $message = null, array $context = []): void
+    {
+        $this->writeLog('info', $message, $context);
+    }
+
+    /**
+     * Logs debug-level messages: detailed debug information.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
+    public function debug(string $message = null, array $context = []): void
+    {
+        $this->writeLog('debug', $message, $context);
+    }
+
+    /**
+     * Logs messages with an arbitrary level.
+     *
+     * @param string $level The log level (e.g., 'info', 'error', 'debug').
+     * @param string|null $message
+     * @param array $context
+     */
+    public function log(string $level, string $message = null, array $context = []): void
+    {
+        $this->writeLog($level, $message, $context);
+    }
+
+    /**
+     * Tracking model events
+     *
+     * @param Model $model
+     * @param string $action
+     * @param string|null $url
+     * @param Model|null $user
+     * @param array $context
+     */
     public function track(Model $model, string $action, string $url = null, Model $user = null, array $context = [])
     {
         $channel = config('logger.tracking.default');
