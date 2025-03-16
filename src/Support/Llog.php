@@ -114,10 +114,11 @@ class Llog
      * @param Model $model
      * @param string $action
      * @param string|null $url
+     * @param string|null $ip
      * @param Model|null $user
      * @param array $context
      */
-    public function track(Model $model, string $action, string $url = null, Model $user = null, array $context = [])
+    public function track(Model $model, string $action, string $url = null, string $ip = null, Model $user = null, array $context = [])
     {
         $channel = config('logger.tracking.default');
         $modelClass = ucfirst($model->getMorphClass());
@@ -127,6 +128,7 @@ class Llog
             'model' => $modelClass,
             'action' => $action,
             'url' => $url,
+            'ip' => $ip,
             'user' => $user,
             'data' => $context,
         ]));
@@ -147,6 +149,7 @@ class Llog
         Log::channel($channel)->{$method}(json_encode([
             'message' => $message,
             'data' => $context,
+            'ip' => request()->ip(),
             'user' => auth()->user(),
         ]));
     }

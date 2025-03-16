@@ -232,6 +232,7 @@
                             $model = $array['model'] ?? null;
                             $id = $array['id'] ?? null;
                             $url = $array['url'] ?? null;
+                            $ip = $array['ip'] ?? null;
                             $action = $array['action'] ?? null;
                             $user = json_decode($log['text'], true)['user'] ?? null;
                         @endphp
@@ -286,6 +287,9 @@
                                         data-display="user{{ $key }}">
                                     <span class="fa fa-user"></span>
                                 </button>
+                                @endif
+                                @if($ip)
+                                {!! "ip - <b>{$ip}</b>" !!} <br>
                                 @endif
                                 @foreach(\Illuminate\Support\Arr::only($user ?? [], config('logger.user.fields')) as $field => $value)
                                     {!! "{$field} - <b>{$value}</b>" !!} <br>

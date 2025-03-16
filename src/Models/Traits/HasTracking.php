@@ -11,12 +11,13 @@ trait HasTracking
     protected static function bootHasTracking()
     {
         $url = request()->url();
+        $ip = request()->ip();
 
-        static::creating(function ($model) use ($url) {
-            Llog::track($model, 'created', $url, auth()->user(), ['model' => $model]);
+        static::creating(function ($model) use ($url, $ip) {
+            Llog::track($model, 'created', $url, $ip, auth()->user(), ['model' => $model]);
         });
 
-        static::updating(function ($model) use ($url) {
+        static::updating(function ($model) use ($url, $ip) {
             $changes = $model->getDirty();
             $original = $model->getOriginal();
 
@@ -30,12 +31,12 @@ trait HasTracking
                     ];
                 }
 
-                Llog::track($model, 'updated', $url, auth()->user(), ['changes' => $modelChanges]);
+                Llog::track($model, 'updated', $url, $ip, auth()->user(), ['changes' => $modelChanges]);
             }
         });
 
-        static::deleting(function ($model) use ($url) {
-            Llog::track($model, 'deleted', $url, auth()->user());
+        static::deleting(function ($model) use ($url, $ip) {
+            Llog::track($model, 'deleted', $url, $ip, auth()->user());
         });
     }
 }
