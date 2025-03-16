@@ -13,7 +13,7 @@ class Llog
     * @param string|null $message
     * @param array $context
     */
-    public function emergency(string $message = null, array $context = []): void
+    public function emergency(string|array $message = null, array $context = []): void
     {
         $this->writeLog('emergency', $message, $context);
     }
@@ -25,7 +25,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function alert(string $message = null, array $context = []): void
+    public function alert(string|array $message = null, array $context = []): void
     {
         $this->writeLog('alert', $message, $context);
     }
@@ -36,7 +36,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function critical(string $message = null, array $context = []): void
+    public function critical(string|array $message = null, array $context = []): void
     {
         $this->writeLog('critical', $message, $context);
     }
@@ -47,7 +47,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function error(string $message = null, array $context = []): void
+    public function error(string|array $message = null, array $context = []): void
     {
         $this->writeLog('error', $message, $context);
     }
@@ -58,7 +58,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function warning(string $message = null, array $context = []): void
+    public function warning(string|array $message = null, array $context = []): void
     {
         $this->writeLog('warning', $message, $context);
     }
@@ -69,7 +69,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function notice(string $message = null, array $context = []): void
+    public function notice(string|array $message = null, array $context = []): void
     {
         $this->writeLog('notice', $message, $context);
     }
@@ -80,7 +80,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function info(string $message = null, array $context = []): void
+    public function info(string|array $message = null, array $context = []): void
     {
         $this->writeLog('info', $message, $context);
     }
@@ -91,7 +91,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function debug(string $message = null, array $context = []): void
+    public function debug(string|array $message = null, array $context = []): void
     {
         $this->writeLog('debug', $message, $context);
     }
@@ -103,7 +103,7 @@ class Llog
      * @param string|null $message
      * @param array $context
      */
-    public function log(string $level, string $message = null, array $context = []): void
+    public function log(string $level, string|array $message = null, array $context = []): void
     {
         $this->writeLog($level, $message, $context);
     }
@@ -134,20 +134,21 @@ class Llog
         ]));
     }
 
-    protected function writeLog(string $method, string $message = null, array $context = [])
+    protected function writeLog(string $method, string|array $message = null, array $context = [])
     {
+        $channel = config('logger.default');
+        $logMessage = is_string($message) ? $message : '';
+        $context = is_array($message) ? array_merge($context, $message) : $context;
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
 
         if (isset($backtrace[2])) {
             $caller = $backtrace[2];
             $callerInfo = " at {$caller['file']}: {$caller['line']}";
-            $message .= $callerInfo;
+            $logMessage .= $callerInfo;
         }
 
-        $channel = config('logger.default');
-
         Log::channel($channel)->{$method}(json_encode([
-            'message' => $message,
+            'message' => $logMessage,
             'data' => $context,
             'ip' => request()->ip(),
             'user' => auth()->user(),
