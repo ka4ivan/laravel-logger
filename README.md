@@ -107,7 +107,7 @@ Llog::info([
     'second' => Brand::find('16df9b24-52f3-4d39-9d96-ae24b6ad3a6a'),  
 ]);  
 ```
-![image](https://github.com/user-attachments/assets/a7f162b2-1b87-4c00-b93a-fe286984258d)
+![image](https://github.com/user-attachments/assets/44701f42-683c-4711-9308-bce4f3592f77)
 
 ### Logging Methods
 
