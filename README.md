@@ -137,9 +137,9 @@ class Article extends Model
     use HasTracking;  
 }  
 ```  
-![image](https://github.com/user-attachments/assets/72429916-bd85-4ec2-90cf-1f8960e5b1f3)
-
 It has the following structure:
+
+![image](https://github.com/user-attachments/assets/72429916-bd85-4ec2-90cf-1f8960e5b1f3)
 
 ### Helpers
 
