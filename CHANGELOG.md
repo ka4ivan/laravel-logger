@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.0.4 - 2025-03-18
+- Update images
+
 ## 1.0.3 - 2025-03-17
 - Update caller file view
 
