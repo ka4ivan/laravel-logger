@@ -9,6 +9,8 @@ if (! function_exists('json_pretty')) {
     {
         $json = json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-        return str_replace('\/', '/', trim($json, '"'));
+        $json = str_replace('\/', '/', $json);
+
+        return $json;
     }
 }

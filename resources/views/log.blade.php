@@ -219,8 +219,8 @@
                             @else
                             <th style="width: 5%;">Line number</th>
                             @endif
-                            <th style="width: 65%;">Content</th>
-                            <th style="width: 25%;">Auth</th>
+                            <th style="width: 70%;">Content</th>
+                            <th style="width: 20%;">Auth</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -260,7 +260,15 @@
                                 @else
                                     {{ $message }}
                                 @endif
-                                <pre class="content-data">{{ json_pretty($data) }}</pre>
+
+                                @php
+                                    $dataArray = is_array($data) ? $data : json_decode($data, true);
+                                @endphp
+                                @if(is_array($dataArray))
+                                <pre class="content-data">{{ json_pretty($dataArray) }}</pre>
+                                @else
+                                {{ $data }}
+                                @endif
 
                                 @isset($log['in_file'])
                                   <br/>{{ $log['in_file'] }}
