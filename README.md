@@ -103,7 +103,7 @@ Or without a message:
 use Ka4ivan\LaravelLogger\Facades\Llog;  
 
 // Example  
-Llog::warning([  
+Llog::info([  
     'first' => Brand::find('545e94e7-720f-4df6-9bef-bc0684f30690'),  
     'second' => Brand::find('16df9b24-52f3-4d39-9d96-ae24b6ad3a6a'),  
 ]);  
