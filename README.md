@@ -96,7 +96,7 @@ Llog::warning('Something happened', [
 ]);  
 ```  
 
-![image](https://github.com/user-attachments/assets/11180772-c328-482a-8303-8d932a717671)
+![image](https://github.com/user-attachments/assets/06133276-fd7b-4516-a156-9f5a7ea945d6)
 
 Or without a message:
 ```php
