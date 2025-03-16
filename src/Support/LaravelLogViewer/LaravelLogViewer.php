@@ -41,7 +41,7 @@ class LaravelLogViewer
     {
         $this->level = new Level();
         $this->pattern = new Pattern();
-        $this->storage_path = function_exists('config') ? config('logviewer.storage_path', storage_path('logs')) : storage_path('logs');
+        $this->storage_path = config('logger.storage_path', storage_path('logs'));
 
     }
 
@@ -152,7 +152,7 @@ class LaravelLogViewer
             $this->file = $log_file[0];
         }
 
-        $max_file_size = function_exists('config') ? config('logviewer.max_file_size', self::MAX_FILE_SIZE) : self::MAX_FILE_SIZE;
+        $max_file_size = config('logger.max_file_size', self::MAX_FILE_SIZE);
         if (app('files')->size($this->file) > $max_file_size) {
             return null;
         }
@@ -292,7 +292,7 @@ class LaravelLogViewer
     public function getFiles($basename = false, $folder = '')
     {
         $files = [];
-        $pattern = function_exists('config') ? config('logviewer.pattern', '*.log') : '*.log';
+        $pattern = config('logger.pattern', '*.log');
         $fullPath = $this->storage_path . '/' . $folder;
 
         $listObject = new \RecursiveIteratorIterator(
