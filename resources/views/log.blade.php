@@ -163,8 +163,8 @@
     <script>
         function initTheme() {
             const darkThemeSelected =
-            localStorage.getItem('darkSwitch') !== null &&
-            localStorage.getItem('darkSwitch') === 'dark';
+                localStorage.getItem('darkSwitch') !== null &&
+                localStorage.getItem('darkSwitch') === 'dark';
             darkSwitch.checked = darkThemeSelected;
             darkThemeSelected ? document.body.setAttribute('data-theme', 'dark') :
             document.body.removeAttribute('data-theme');
