@@ -27,11 +27,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/logger.php', 'logger');
+        $this->mergeConfigFrom(__DIR__ . '/../config/logger.php', 'logger');
 
         $existingChannels = $this->app->config->get('logging.channels', []);
 
-        $newChannels = require __DIR__.'/../config/logger.php';
+        $newChannels = require __DIR__ . '/../config/logger.php';
         $newChannels = $newChannels['channels'] ?? [];
 
         $this->app->config->set(
@@ -39,7 +39,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             array_merge($existingChannels, $newChannels)
         );
 
-        $this->app->bind(\Ka4ivan\LaravelLogger\Llog::class, function () {
+        $this->app->bind(\Ka4ivan\LaravelLogger\Llog::class, function() {
             return new \Ka4ivan\LaravelLogger\Support\Llog;
         });
 

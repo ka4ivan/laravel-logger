@@ -242,7 +242,10 @@ class LaravelLogViewer
         $contents = array();
         $dir = $path ? $path : $this->storage_path;
         foreach (scandir($dir) as $node) {
-            if ($node == '.' || $node == '..') continue;
+            if ($node == '.' || $node == '..') {
+                continue;
+            }
+
             $path = $dir . '\\' . $node;
             if (is_dir($path)) {
                 $contents[$path] = $this->foldersAndFiles($path);
@@ -269,7 +272,9 @@ class LaravelLogViewer
             \RecursiveIteratorIterator::CHILD_FIRST
         );
         foreach ($listObject as $fileinfo) {
-            if ($fileinfo->isDir()) $folders[] = $fileinfo->getRealPath();
+            if ($fileinfo->isDir()) {
+                $folders[] = $fileinfo->getRealPath();
+            }
         }
         return $folders;
     }
@@ -301,8 +306,9 @@ class LaravelLogViewer
         );
 
         foreach ($listObject as $fileinfo) {
-            if (!$fileinfo->isDir() && strtolower(pathinfo($fileinfo->getRealPath(), PATHINFO_EXTENSION)) == explode('.', $pattern)[1])
+            if (!$fileinfo->isDir() && strtolower(pathinfo($fileinfo->getRealPath(), PATHINFO_EXTENSION)) == explode('.', $pattern)[1]) {
                 $files[] = $basename ? basename($fileinfo->getRealPath()) : $fileinfo->getRealPath();
+            }
         }
 
         arsort($files);

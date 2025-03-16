@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Log;
 class Llog
 {
     /**
-    * Logs emergency-level messages: system is unusable.
-    *
-    * @param string|null $message
-    * @param array $context
-    */
+     * Logs emergency-level messages: system is unusable.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
     public function emergency(string|array $message = null, array $context = []): void
     {
         $this->writeLog('emergency', $message, $context);
