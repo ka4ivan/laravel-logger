@@ -228,6 +228,7 @@
                         @php
                             $array = json_decode($log['text'], true);
                             $message = $array['message'] ?? null;
+                            $caller = $array['caller'] ?? null;
                             $data = $array['data'] ?? $log['text'];
                             $model = $array['model'] ?? null;
                             $id = $array['id'] ?? null;
@@ -257,9 +258,13 @@
                                 @endif
 
                                 @if($model)
-                                    {{ "{$model} {$action} - $id" }}
+                                {{ "{$model} {$action} - $id" }}
                                 @else
-                                    {{ $message }}
+                                {{ $message }}
+                                @endif
+
+                                @if($caller)
+                                <pre class="content-data mb-0"><small>{{ $caller }}</small></pre>
                                 @endif
 
                                 @php
