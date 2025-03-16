@@ -95,7 +95,8 @@ Llog::warning('Something happened', [
     'leads' => Lead::count(),  
 ]);  
 ```  
-![image](https://github.com/user-attachments/assets/d3cf85db-76a8-462d-b89b-987800d1ea79)
+
+![image](https://github.com/user-attachments/assets/11180772-c328-482a-8303-8d932a717671)
 
 Or without a message:
 ```php
