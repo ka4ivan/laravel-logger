@@ -94,6 +94,7 @@ Llog::warning('Something happened', [
     'leads' => Lead::count(),  
 ]);  
 ```  
+![image](https://github.com/user-attachments/assets/d3cf85db-76a8-462d-b89b-987800d1ea79)
 
 Or without a message:
 ```php
@@ -101,10 +102,11 @@ use Ka4ivan\LaravelLogger\Facades\Llog;
 
 // Example  
 Llog::warning([  
-    'cart' => Order::firstWhere(['number' => '1001']),  
-    'order' => Order::firstWhere(['number' => '1002']),  
+    'first' => Brand::find('545e94e7-720f-4df6-9bef-bc0684f30690'),  
+    'second' => Brand::find('16df9b24-52f3-4d39-9d96-ae24b6ad3a6a'),  
 ]);  
 ```
+![image](https://github.com/user-attachments/assets/a7f162b2-1b87-4c00-b93a-fe286984258d)
 
 ### Logging Methods
 
@@ -133,6 +135,7 @@ class Article extends Model
     use HasTracking;  
 }  
 ```  
+![image](https://github.com/user-attachments/assets/72429916-bd85-4ec2-90cf-1f8960e5b1f3)
 
 It has the following structure:
 
