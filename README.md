@@ -135,7 +135,7 @@ use Ka4ivan\LaravelLogger\Models\Traits\HasTracking;
 class Article extends Model  
 {  
     use HasTracking;  
-}  
+}
 ```  
 It has the following structure:
 
