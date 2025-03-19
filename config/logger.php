@@ -18,10 +18,15 @@ return [
         'default' => 'tracking',
     ],
 
-    /*
-     * Specifies which fields from the authenticated user should be included in the logs.
-     */
     'user' => [
+        /*
+         * Fields that will be shown.
+         */
+        'visible_fields' => ['email'],
+
+        /*
+         * Specifies which fields from the authenticated user should be included in the logs.
+         */
         'fields' => ['id', 'email', 'name'],
     ],
 

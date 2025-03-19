@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.0.5 - 2025-03-19
+- Update view & refactor
+
 ## 1.0.4 - 2025-03-18
 - Update images
 

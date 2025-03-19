@@ -3,104 +3,115 @@
 namespace Ka4ivan\LaravelLogger\Support;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 class Llog
 {
     /**
+     * @var LoggerInterface $logger
+     */
+    protected LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
      * Logs emergency-level messages: system is unusable.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function emergency(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('emergency', $message, $context);
+        $this->writeLog(LogLevel::EMERGENCY, $message, $context);
     }
 
     /**
      * Logs alert-level messages: action must be taken immediately.
      * Example: Entire website down, database unavailable, etc.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function alert(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('alert', $message, $context);
+        $this->writeLog(LogLevel::ALERT, $message, $context);
     }
 
     /**
      * Logs critical-level messages: application component unavailable, unexpected exception, etc.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function critical(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('critical', $message, $context);
+        $this->writeLog(LogLevel::CRITICAL, $message, $context);
     }
 
     /**
      * Logs error-level messages: runtime errors that do not require immediate action but should be monitored.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function error(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('error', $message, $context);
+        $this->writeLog(LogLevel::ERROR, $message, $context);
     }
 
     /**
      * Logs warning-level messages: exceptional occurrences that are not errors but may require attention.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function warning(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('warning', $message, $context);
+        $this->writeLog(LogLevel::WARNING, $message, $context);
     }
 
     /**
      * Logs notice-level messages: normal but significant events.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function notice(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('notice', $message, $context);
+        $this->writeLog(LogLevel::NOTICE, $message, $context);
     }
 
     /**
      * Logs info-level messages: interesting events like user logins, SQL logs, etc.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function info(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('info', $message, $context);
+        $this->writeLog(LogLevel::INFO, $message, $context);
     }
 
     /**
      * Logs debug-level messages: detailed debug information.
      *
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function debug(string|array $message = null, array $context = []): void
     {
-        $this->writeLog('debug', $message, $context);
+        $this->writeLog(LogLevel::DEBUG, $message, $context);
     }
 
     /**
      * Logs messages with an arbitrary level.
      *
      * @param string $level The log level (e.g., 'info', 'error', 'debug').
-     * @param string|null $message
+     * @param string|array|null $message
      * @param array $context
      */
     public function log(string $level, string|array $message = null, array $context = []): void
@@ -118,40 +129,59 @@ class Llog
      * @param Model|null $user
      * @param array $context
      */
-    public function track(Model $model, string $action, string $url = null, string $ip = null, Model $user = null, array $context = [])
-    {
+    public function track(
+        Model $model,
+        string $action,
+        ?string $url = null,
+        ?string $ip = null,
+        ?Model $user = null,
+        array $context = []
+    ): void {
         $channel = config('logger.tracking.default');
-        $modelClass = ucfirst($model->getMorphClass());
 
-        Log::channel($channel)->info(json_encode([
-            'id' => $model->id,
-            'model' => $modelClass,
+        $logData = [
+            'id' => $model->getKey(),
+            'model' => ucfirst($model->getMorphClass()),
             'action' => $action,
-            'url' => $url,
-            'ip' => $ip,
-            'user' => $user,
+            'url' => $url ?? request()->fullUrl(),
+            'ip' => $ip ?? request()->ip(),
+            'user' => $user->only(config('logger.user.fields')),
             'data' => $context,
-        ]));
+        ];
+
+        $this->logger->channel($channel)->log(
+            LogLevel::INFO,
+            json_encode($logData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        );
     }
 
-    protected function writeLog(string $method, string|array $message = null, array $context = [])
+    /**
+     * Logs a message with a given severity level.
+     *
+     * @param string $level The log level (e.g., 'info', 'error', 'debug').
+     * @param string|array|null $message
+     * @param array $context
+     */
+    protected function writeLog(string $level, string|array $message = null, array $context = []): void
     {
         $channel = config('logger.default');
-        $logMessage = is_string($message) ? $message : '';
-        $context = is_array($message) ? array_merge($context, $message) : $context;
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        $caller = null;
+        $messageArray = is_array($message) ? $message : json_decode($message, true);
+        $logMessage = is_array($messageArray) ? '' : $message;
+        $context = is_array($messageArray) ? array_merge($context, $messageArray) : $context;
 
-        if (isset($backtrace[2])) {
-            $caller = $backtrace[2];
-        }
+        $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2] ?? null;
 
-        Log::channel($channel)->{$method}(json_encode([
+        $logData = [
             'message' => $logMessage,
-            'caller' => "{$caller['file']}: {$caller['line']}",
+            'caller' => $caller ? "{$caller['file']}:{$caller['line']}" : 'unknown',
             'data' => $context,
             'ip' => request()->ip(),
-            'user' => auth()->user(),
-        ]));
+            'user' => auth()->user()->only(config('logger.user.fields')),
+        ];
+
+        $this->logger->channel($channel)->log(
+            $level,
+            json_encode($logData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        );
     }
 }
