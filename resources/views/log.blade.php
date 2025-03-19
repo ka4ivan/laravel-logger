@@ -91,14 +91,6 @@
           color: #cccccc;
         }
 
-        [data-theme="dark"] a {
-          color: #4da3ff;
-        }
-
-        [data-theme="dark"] a:hover {
-          color: #a8d2ff;
-        }
-
         [data-theme="dark"] .list-group-item {
           background-color: #1d1d1d;
           border-color: #444;
@@ -198,10 +190,6 @@
                         {{$file}}
                     </a>
                     @endforeach
-                    <div class="custom-control custom-switch" style="padding-top:20px;">
-                        <input type="checkbox" class="custom-control-input" id="darkSwitch">
-                        <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px; font-size: 15px;">Dark Mode</label>
-                    </div>
                 </div>
             </div>
             <div class="col-10 table-container">
@@ -212,21 +200,21 @@
                 @else
                 <table id="table-log" class="table table-striped" data-ordering-index="{{ $standardFormat ? 2 : 0 }}">
                     <thead>
-                        <tr>
-                            @if($standardFormat)
+                    <tr>
+                        @if ($standardFormat)
                             <th style="width: 5%;">Level</th>
                             <th style="width: 5%;">Date</th>
-                            @else
+                        @else
                             <th style="width: 5%;">Line number</th>
-                            @endif
-                            <th style="width: 70%;">Content</th>
-                            <th style="width: 20%;">Auth</th>
-                        </tr>
+                        @endif
+                        <th style="width: 70%;">Content</th>
+                        <th style="width: 20%;">Auth</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach($logs as $key => $log)
+                    @foreach ($logs as $key => $log)
                         @php
-                            $array = json_decode($log['text'], true);
+                            $array = json_decode($log['text'], true) ?? [];
                             $message = $array['message'] ?? null;
                             $caller = $array['caller'] ?? null;
                             $data = $array['data'] ?? $log['text'];
@@ -235,99 +223,108 @@
                             $url = $array['url'] ?? null;
                             $ip = $array['ip'] ?? null;
                             $action = $array['action'] ?? null;
-                            $user = json_decode($log['text'], true)['user'] ?? null;
+                            $user = $array['user'] ?? null;
                         @endphp
                         <tr data-display="stack{{ $key }}">
-                            @if($standardFormat)
-                            <td class="nowrap text-{{ $log['level_class'] }}">
-                                <span class="fa fa-{{ $log['level_img'] }}" aria-hidden="true"></span>&nbsp;&nbsp;{{$log['level']}}
-                                <br>
-                                <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;&nbsp;{{ $log['context'] }}
-                            </td>
+                            @if ($standardFormat)
+                                <td class="nowrap text-{{ $log['level_class'] }}">
+                                    <span class="fa fa-{{ $log['level_img'] }}" aria-hidden="true"></span>
+                                    &nbsp;&nbsp;{{ $log['level'] }}
+                                    <br>
+                                    <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;&nbsp;{{ $log['context'] }}
+                                </td>
                             @endif
 
                             <td class="date">{{ $log['date'] }}</td>
 
                             <td class="text">
-                                @if($log['stack'] || $url)
-                                <button type="button"
-                                    class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2"
-                                    data-display="stack{{ $key }}">
-                                <span class="fa fa-search"></span>
-                                </button>
+                                @if ($log['stack'] || $url)
+                                    <button type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2"
+                                            data-display="stack{{ $key }}">
+                                        <span class="fa fa-search"></span>
+                                    </button>
                                 @endif
 
-                                @if($model)
-                                {{ "{$model} {$action} - $id" }}
+                                @if ($model)
+                                    {{ "{$model} {$action} - {$id}" }}
                                 @else
-                                {{ $message }}
+                                    {{ $message }}
                                 @endif
 
-                                @if($caller)
-                                <pre class="content-data mb-0"><small>{{ $caller }}</small></pre>
+                                @if ($caller)
+                                    <pre class="content-data mb-0"><small>{{ $caller }}</small></pre>
                                 @endif
 
-                                @php
-                                    $dataArray = is_array($data) ? $data : json_decode($data, true);
-                                @endphp
-                                @if(is_array($dataArray))
-                                <pre class="content-data">{{ json_pretty($dataArray) }}</pre>
+                                @php $dataArray = is_array($data) ? $data : json_decode($data, true); @endphp
+                                @if (is_array($dataArray))
+                                    <pre class="content-data">{{ json_pretty($dataArray) }}</pre>
                                 @else
-                                {{ $data }}
+                                    {{ $data }}
                                 @endif
 
                                 @isset($log['in_file'])
-                                  <br/>{{ $log['in_file'] }}
+                                    <br/>{{ $log['in_file'] }}
                                 @endisset
 
-                                @if($log['stack'] || $url)
-                                <div class="stack" id="stack{{ $key }}" style="display: none; white-space: pre-wrap;">@if($url){{ json_pretty(['url' => $url]) }}<br>@endif{{  trim($log['stack'])  }}</div>
+                                @if ($log['stack'] || $url)
+                                    <div class="stack" id="stack{{ $key }}" style="display: none; white-space: pre-wrap;">
+                                        @if ($url)
+                                            {{ json_pretty(['url' => $url]) }}<br>
+                                        @endif
+                                        {{ trim($log['stack']) }}
+                                    </div>
                                 @endif
                             </td>
 
                             <td class="text">
-                                @if($user)
-                                <button type="button"
-                                        class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2"
-                                        data-display="user{{ $key }}">
-                                    <span class="fa fa-user"></span>
-                                </button>
+                                @if ($user)
+                                    <button type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2"
+                                            data-display="user{{ $key }}">
+                                        <span class="fa fa-user"></span>
+                                    </button>
                                 @endif
-                                @if($ip)
-                                {!! "ip - <b>{$ip}</b>" !!} <br>
+
+                                @if ($ip)
+                                    {!! "IP - <b>{$ip}</b>" !!} <br>
                                 @endif
-                                @foreach(\Illuminate\Support\Arr::only($user ?? [], config('logger.user.fields')) as $field => $value)
+                                @foreach (\Illuminate\Support\Arr::only($user ?? [], config('logger.user.visible_fields')) as $field => $value)
                                     {!! "{$field} - <b>{$value}</b>" !!} <br>
                                 @endforeach
-                                @if($user)
-                                <div class="stack" id="user{{ $key }}" style="display: none; white-space: pre-wrap;"><br><pre class="content-data">{{ json_pretty($user) }}</pre></div>
+                                @if ($user)
+                                    <br>
+                                    <div class="stack" id="user{{ $key }}" style="display: none; white-space: pre-wrap;"><pre class="content-data">{{ json_pretty($user) }}</pre></div>
                                 @endif
                             </td>
                         </tr>
-                        @endforeach
+                    @endforeach
                     </tbody>
                 </table>
                 @endif
                 <div class="p-3">
                     @if($current_file)
-                    <a href="?dl={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
+                    <a class="btn btn-flat btn-primary" href="?dl={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
                         <span class="fa fa-download"></span> Download file
                     </a>
-                    -
-                    <a id="clean-log" href="?clean={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
+
+                    <a class="btn btn-flat btn-danger" id="clean-log" href="?clean={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
                         <span class="fa fa-sync"></span> Clean file
                     </a>
-                    -
-                    <a id="delete-log" href="?del={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
+
+                    <a class="btn btn-flat btn-outline-danger" id="delete-log" href="?del={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
                         <span class="fa fa-trash"></span> Delete file
                     </a>
+
                     @if(count($files) > 1)
-                    -
-                    <a id="delete-all-log" href="?delall=true{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
+                    <a class="btn btn-flat btn-outline-danger" id="delete-all-log" href="?delall=true{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
                         <span class="fa fa-trash-alt"></span> Delete all files
                     </a>
                     @endif
                     @endif
+
+                        <div class="custom-control custom-switch" style="padding-top:20px;">
+                            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                            <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px; font-size: 15px;">Dark Mode</label>
+                        </div>
                 </div>
             </div>
         </div>
