@@ -51,7 +51,7 @@
         .list-group-item {
           word-break: break-word;
         }
-
+        
         .folder {
           padding-top: 15px;
         }
@@ -238,10 +238,23 @@
                             <td class="date">{{ $log['date'] }}</td>
 
                             <td class="text">
+                                @php
+                                    $dataArray = is_array($data) ? $data : json_decode($data, true);
+                                    $jsonPretty = is_array($dataArray) ? json_pretty($dataArray) : $data;
+                                    $shortJson = Str::limit($jsonPretty, 300);
+                                @endphp
+
                                 @if ($log['stack'] || $url)
                                     <button type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2"
                                             data-display="stack{{ $key }}">
                                         <span class="fa fa-search"></span>
+                                    </button>
+                                @endif
+
+                                @if(strlen($jsonPretty) > 300)
+                                    <button type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2 toggle-json">
+                                        <span class="fas fa-arrow-down"></span>
+                                        <span class="fas fa-arrow-up d-none"></span>
                                     </button>
                                 @endif
 
@@ -255,24 +268,15 @@
                                     <pre class="content-data mb-0"><small>{{ $caller }}</small></pre>
                                 @endif
 
-                                @php $dataArray = is_array($data) ? $data : json_decode($data, true); @endphp
-                                @if (is_array($dataArray))
-                                    <pre class="content-data">{{ json_pretty($dataArray) }}</pre>
-                                @else
-                                    {{ $data }}
-                                @endif
+                                <pre class="content-data short-json" style="white-space: pre-wrap;">{{ $shortJson }}</pre>
+                                <pre class="content-data full-json d-none" style="white-space: pre-wrap;">{{ $jsonPretty }}</pre>
 
                                 @isset($log['in_file'])
                                     <br/>{{ $log['in_file'] }}
                                 @endisset
 
                                 @if ($log['stack'] || $url)
-                                    <div class="stack" id="stack{{ $key }}" style="display: none; white-space: pre-wrap;">
-                                        @if ($url)
-                                            {{ json_pretty(['url' => $url]) }}<br>
-                                        @endif
-                                        {{ trim($log['stack']) }}
-                                    </div>
+                                    <div class="stack" id="stack{{ $key }}" style="display: none; white-space: pre-wrap;">@if ($url){{ json_pretty(['url' => $url]) }}<br>@endif{{ trim($log['stack']) }}</div>
                                 @endif
                             </td>
 
@@ -383,6 +387,30 @@
 
             $('#delete-log, #clean-log, #delete-all-log').click(function () {
                 return confirm('Are you sure?');
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toggle-json").forEach(button => {
+                button.addEventListener("click", function () {
+                    const parent = this.closest("td");
+                    const shortJson = parent.querySelector(".short-json");
+                    const fullJson = parent.querySelector(".full-json");
+                    const arrowDown = this.querySelector(".fa-arrow-down");
+                    const arrowUp = this.querySelector(".fa-arrow-up");
+
+                    if (shortJson.classList.contains("d-none")) {
+                        shortJson.classList.remove("d-none");
+                        fullJson.classList.add("d-none");
+                        arrowDown.classList.remove("d-none");
+                        arrowUp.classList.add("d-none");
+                    } else {
+                        shortJson.classList.add("d-none");
+                        fullJson.classList.remove("d-none");
+                        arrowDown.classList.add("d-none");
+                        arrowUp.classList.remove("d-none");
+                    }
+                });
             });
         });
     </script>
