@@ -169,11 +169,14 @@ class Llog
         $logMessage = is_array($messageArray) ? '' : $message;
         $context = is_array($messageArray) ? array_merge($context, $messageArray) : $context;
 
-        $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2] ?? null;
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+
+        $caller = $backtrace[2] ?? null;
+        $callerMethod = $backtrace[3] ?? null;
 
         $logData = [
             'message' => $logMessage,
-            'caller' => $caller ? "{$caller['file']}:{$caller['line']}" : 'unknown',
+            'caller' => $caller ? "{$caller['file']}:{$callerMethod['function']} line {$caller['line']}" : 'unknown',
             'data' => $context,
             'ip' => request()->ip(),
             'user' => auth()->user()?->only(config('logger.user.fields')),

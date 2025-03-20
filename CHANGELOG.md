@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.0.7 - 2025-03-21
+- Show more/less data
+
 ## 1.0.6 - 2025-03-20
 - Fix bugs
 
