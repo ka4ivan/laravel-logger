@@ -176,7 +176,7 @@ class Llog
             'caller' => $caller ? "{$caller['file']}:{$caller['line']}" : 'unknown',
             'data' => $context,
             'ip' => request()->ip(),
-            'user' => auth()->user()->only(config('logger.user.fields')),
+            'user' => auth()->user()?->only(config('logger.user.fields')),
         ];
 
         $this->logger->channel($channel)->log(
