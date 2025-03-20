@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.0.6 - 2025-03-20
+- Fix bugs
+
 ## 1.0.5 - 2025-03-19
 - Update view & refactor
 
