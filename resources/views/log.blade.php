@@ -51,10 +51,6 @@
         .list-group-item {
           word-break: break-word;
         }
-
-        .table-field {
-            cursor: pointer;
-        }
         
         .folder {
           padding-top: 15px;
@@ -229,7 +225,7 @@
                             $action = $array['action'] ?? null;
                             $user = $array['user'] ?? null;
                         @endphp
-                        <tr class="table-field toggle-json" data-display="stack{{ $key }}">
+                        <tr data-display="stack{{ $key }}">
                             @if ($standardFormat)
                                 <td class="nowrap text-{{ $log['level_class'] }}">
                                     <span class="fa fa-{{ $log['level_img'] }}" aria-hidden="true"></span>
@@ -241,11 +237,24 @@
 
                             <td class="date">{{ $log['date'] }}</td>
 
-                            <td class="text json-field">
+                            <td class="text">
+                                @php
+                                    $dataArray = is_array($data) ? $data : json_decode($data, true);
+                                    $jsonPretty = is_array($dataArray) ? json_pretty($dataArray) : $data;
+                                    $shortJson = Str::limit($jsonPretty, 300);
+                                @endphp
+
                                 @if ($log['stack'] || $url)
                                     <button type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2"
                                             data-display="stack{{ $key }}">
                                         <span class="fa fa-search"></span>
+                                    </button>
+                                @endif
+
+                                @if(strlen($jsonPretty) > 300)
+                                    <button type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2 toggle-json">
+                                        <span class="fas fa-arrow-down"></span>
+                                        <span class="fas fa-arrow-up d-none"></span>
                                     </button>
                                 @endif
 
@@ -258,12 +267,6 @@
                                 @if ($caller)
                                     <pre class="content-data mb-0"><small>{{ $caller }}</small></pre>
                                 @endif
-
-                                @php
-                                    $dataArray = is_array($data) ? $data : json_decode($data, true);
-                                    $jsonPretty = is_array($dataArray) ? json_pretty($dataArray) : $data;
-                                    $shortJson = Str::limit($jsonPretty, 300);
-                                @endphp
 
                                 <pre class="content-data short-json" style="white-space: pre-wrap;">{{ $shortJson }}</pre>
                                 <pre class="content-data full-json d-none" style="white-space: pre-wrap;">{{ $jsonPretty }}</pre>
@@ -388,20 +391,24 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".toggle-json").forEach(row => {
-                row.addEventListener("click", function () {
-                    const jsonField = this.querySelector(".json-field");
-                    if (!jsonField) return;
-
-                    const shortJson = jsonField.querySelector(".short-json");
-                    const fullJson = jsonField.querySelector(".full-json");
+            document.querySelectorAll(".toggle-json").forEach(button => {
+                button.addEventListener("click", function () {
+                    const parent = this.closest("td");
+                    const shortJson = parent.querySelector(".short-json");
+                    const fullJson = parent.querySelector(".full-json");
+                    const arrowDown = this.querySelector(".fa-arrow-down");
+                    const arrowUp = this.querySelector(".fa-arrow-up");
 
                     if (shortJson.classList.contains("d-none")) {
                         shortJson.classList.remove("d-none");
                         fullJson.classList.add("d-none");
+                        arrowDown.classList.remove("d-none");
+                        arrowUp.classList.add("d-none");
                     } else {
                         shortJson.classList.add("d-none");
                         fullJson.classList.remove("d-none");
+                        arrowDown.classList.add("d-none");
+                        arrowUp.classList.remove("d-none");
                     }
                 });
             });

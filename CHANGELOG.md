@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.0.8 - 2025-03-22
+- Show more/less button
+
 ## 1.0.7 - 2025-03-21
 - Show more/less data
 
