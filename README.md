@@ -25,12 +25,12 @@ A Laravel package for advanced logging, providing structured logs and tracking m
 
 1️⃣ Require this package using Composer:  
 ```shell  
-composer require ka4ivan/laravel-logger  
+composer require ka4ivan/laravel-logger
 ```
 
 2️⃣ Publish the package resources:  
 ```shell  
-php artisan vendor:publish --provider="Ka4ivan\LaravelLogger\ServiceProvider"  
+php artisan vendor:publish --provider="Ka4ivan\LaravelLogger\ServiceProvider"
 ```
 
 This command publishes:
@@ -39,7 +39,7 @@ This command publishes:
 
 3️⃣ Add a route to your `web.php` file:  
 ```php  
-Route::get('logs', [\Ka4ivan\LaravelLogger\Http\Controllers\LogViewerController::class, 'index'])->name('logs');  
+Route::get('logs', [\Ka4ivan\LaravelLogger\Http\Controllers\LogViewerController::class, 'index'])->name('logs');
 ```
 
 ### 🔧 Default Configuration
