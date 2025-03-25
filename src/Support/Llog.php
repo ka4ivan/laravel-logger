@@ -3,10 +3,11 @@
 namespace Ka4ivan\LaravelLogger\Support;
 
 use Illuminate\Database\Eloquent\Model;
+use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class Llog
+class Llog extends AbstractLogger implements LoggerInterface
 {
     /**
      * @var LoggerInterface $logger
@@ -24,7 +25,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function emergency(string|array $message = null, array $context = []): void
+    public function emergency($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::EMERGENCY, $message, $context);
     }
@@ -36,7 +37,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function alert(string|array $message = null, array $context = []): void
+    public function alert($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::ALERT, $message, $context);
     }
@@ -47,7 +48,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function critical(string|array $message = null, array $context = []): void
+    public function critical($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::CRITICAL, $message, $context);
     }
@@ -58,7 +59,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function error(string|array $message = null, array $context = []): void
+    public function error($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::ERROR, $message, $context);
     }
@@ -69,7 +70,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function warning(string|array $message = null, array $context = []): void
+    public function warning($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::WARNING, $message, $context);
     }
@@ -80,7 +81,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function notice(string|array $message = null, array $context = []): void
+    public function notice($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::NOTICE, $message, $context);
     }
@@ -91,7 +92,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function info(string|array $message = null, array $context = []): void
+    public function info($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::INFO, $message, $context);
     }
@@ -102,7 +103,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function debug(string|array $message = null, array $context = []): void
+    public function debug($message = null, array $context = []): void
     {
         $this->writeLog(LogLevel::DEBUG, $message, $context);
     }
@@ -114,7 +115,7 @@ class Llog
      * @param string|array|null $message
      * @param array $context
      */
-    public function log(string $level, string|array $message = null, array $context = []): void
+    public function log($level, $message, array $context = []): void
     {
         $this->writeLog($level, $message, $context);
     }
