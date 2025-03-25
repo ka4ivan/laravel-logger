@@ -8,6 +8,19 @@ use Ka4ivan\LaravelLogger\Facades\Llog;
 
 trait HasTracking
 {
+    /*
+     * Attributes whose changes will not be logged if only they are modified.
+     * However, if at least one field outside this list is changed,
+     * all modifications, including these fields, will be logged.
+     *
+     * For example, if only `activity_at` changes in the `user` model,
+     * this change will not be recorded in the logs.
+     * But if `activity_at` and another field change, both will be logged.
+     *
+     * @var array
+     */
+//    protected array $untrackedAttributes = ['activity_at'];
+
     protected static function bootHasTracking()
     {
         $url = request()->url();
@@ -17,20 +30,18 @@ trait HasTracking
             Llog::track($model, 'created', $url, $ip, auth()->user(), ['model' => $model]);
         });
 
-        static::updating(function($model) use ($url, $ip) {
+        static::updating(function ($model) use ($url, $ip) {
             $changes = $model->getDirty();
-            $original = $model->getOriginal();
 
-            if (!empty($changes)) {
-                $modelChanges = [];
+            if (!empty($model->untrackedAttributes) && empty(array_diff(array_keys($changes), $model->untrackedAttributes))) {
+                return;
+            }
 
-                foreach ($changes as $field => $newValue) {
-                    $modelChanges[$field] = [
-                        'old' => $original[$field] ?? null,
-                        'new' => $newValue,
-                    ];
-                }
+            $modelChanges = collect($changes)->mapWithKeys(fn($newValue, $field) => [
+                $field => ['old' => $model->getOriginal($field), 'new' => $newValue]
+            ])->all();
 
+            if ($modelChanges) {
                 Llog::track($model, 'updated', $url, $ip, auth()->user(), ['changes' => $modelChanges]);
             }
         });
