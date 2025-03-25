@@ -11,10 +11,11 @@ return [
 
     /*
      * Tracking logs configuration
-     *
-     * Defines the default logging channel for tracking events.
      */
     'tracking' => [
+        /*
+         * Defines the default logging channel for tracking events.
+         */
         'default' => 'tracking',
     ],
 
