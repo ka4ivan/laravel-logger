@@ -1,6 +1,10 @@
  
 # Changelog
 
+## 1.1.0 - 2025-03-25
+- PSR-3 refactor
+- Added $untrackedAttributes for tracking model changes
+
 ## 1.0.8 - 2025-03-22
 - Show more/less button
 
