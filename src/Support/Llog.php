@@ -146,7 +146,7 @@ class Llog extends AbstractLogger implements LoggerInterface
             'action' => $action,
             'url' => $url ?? request()->fullUrl(),
             'ip' => $ip ?? request()->ip(),
-            'user' => $user->only(config('logger.user.fields')),
+            'user' => $user?->only(config('logger.user.fields')),
             'data' => $context,
         ];
 

@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.1.1 - 2025-03-26
+- Fix bugs
+
 ## 1.1.0 - 2025-03-25
 - PSR-3 refactor
 - Added $untrackedAttributes for tracking model changes
