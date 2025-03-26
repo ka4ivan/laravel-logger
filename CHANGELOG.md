@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.1.2 - 2025-03-27
+- Added api auth user
+
 ## 1.1.1 - 2025-03-26
 - Fix bugs
 
