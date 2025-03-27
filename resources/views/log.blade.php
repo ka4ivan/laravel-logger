@@ -198,15 +198,11 @@
                     Log file >50M, please download it.
                 </div>
                 @else
-                <table id="table-log" class="table table-striped" data-ordering-index="{{ $standardFormat ? 2 : 0 }}">
+                <table id="table-log" class="table table-striped">
                     <thead>
                     <tr>
-                        @if ($standardFormat)
-                            <th style="width: 5%;">Level</th>
-                            <th style="width: 5%;">Date</th>
-                        @else
-                            <th style="width: 5%;">Line number</th>
-                        @endif
+                        <th style="width: 5%;">Level</th>
+                        <th style="width: 5%;">Date</th>
                         <th style="width: 70%;">Content</th>
                         <th style="width: 20%;">Auth</th>
                     </tr>
@@ -226,14 +222,12 @@
                             $user = $array['user'] ?? null;
                         @endphp
                         <tr data-display="stack{{ $key }}">
-                            @if ($standardFormat)
-                                <td class="nowrap text-{{ $log['level_class'] }}">
-                                    <span class="fa fa-{{ $log['level_img'] }}" aria-hidden="true"></span>
-                                    &nbsp;&nbsp;{{ $log['level'] }}
-                                    <br>
-                                    <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;&nbsp;{{ $log['context'] }}
-                                </td>
-                            @endif
+                            <td class="nowrap text-{{ $log['level_class'] }}">
+                                <span class="fa fa-{{ $log['level_img'] }}" aria-hidden="true"></span>
+                                &nbsp;&nbsp;{{ $log['level'] }}
+                                <br>
+                                <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;&nbsp;{{ $log['context'] }}
+                            </td>
 
                             <td class="date">{{ $log['date'] }}</td>
 
@@ -373,7 +367,7 @@
             });
 
             $('#table-log').DataTable({
-                "order": [$('#table-log').data('orderingIndex'), 'desc'],
+                "order": [[1, "desc"]],
                 "stateSave": true,
                 "stateSaveCallback": function (settings, data) {
                     window.localStorage.setItem("datatable", JSON.stringify(data));

@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.1.3 - 2025-03-28
+- Fix default sorting by date in logs table
+
 ## 1.1.2 - 2025-03-27
 - Added api auth user
 
