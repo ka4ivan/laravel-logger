@@ -25,12 +25,13 @@ trait HasTracking
     {
         $url = request()->url();
         $ip = request()->ip();
+        $user = auth()->user() ?: request()->user();
 
-        static::creating(function($model) use ($url, $ip) {
-            Llog::track($model, 'created', $url, $ip, auth()->user(), ['model' => $model]);
+        static::creating(function($model) use ($url, $ip, $user) {
+            Llog::track($model, 'created', $url, $ip, $user, ['model' => $model]);
         });
 
-        static::updating(function ($model) use ($url, $ip) {
+        static::updating(function ($model) use ($url, $ip, $user) {
             $changes = $model->getDirty();
 
             if (!empty($model->untrackedAttributes) && empty(array_diff(array_keys($changes), $model->untrackedAttributes))) {
@@ -42,12 +43,12 @@ trait HasTracking
             ])->all();
 
             if ($modelChanges) {
-                Llog::track($model, 'updated', $url, $ip, auth()->user(), ['changes' => $modelChanges]);
+                Llog::track($model, 'updated', $url, $ip, $user, ['changes' => $modelChanges]);
             }
         });
 
-        static::deleting(function($model) use ($url, $ip) {
-            Llog::track($model, 'deleted', $url, $ip, auth()->user());
+        static::deleting(function($model) use ($url, $ip, $user) {
+            Llog::track($model, 'deleted', $url, $ip, $user);
         });
     }
 }
