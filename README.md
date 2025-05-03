@@ -46,10 +46,10 @@ Route::get('logs', [\Ka4ivan\LaravelLogger\Http\Controllers\LogViewerController:
 
 Here’s the default `config` file for reference:  
 ```php
-<?php  
+<?php
 
-return [  
-    'default' => env('LOG_CHANNEL', 'stack'),  
+return [
+    'default' => env('LOG_CHANNEL', 'stack'),
 
     'tracking' => [  
         'default' => 'tracking',  
