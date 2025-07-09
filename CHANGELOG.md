@@ -1,6 +1,9 @@
  
 # Changelog
 
+## 1.1.4 - 2025-07-25
+- Upd phpdoc
+
 ## 1.1.3 - 2025-03-28
 - Fix default sorting by date in logs table
 
