@@ -87,12 +87,12 @@
         */
 
         body[data-theme="dark"] {
-          background-color: #151515;
+          background-color: #343a40;
           color: #cccccc;
         }
 
         [data-theme="dark"] .list-group-item {
-          background-color: #1d1d1d;
+          background-color: #343a40;
           border-color: #444;
         }
 
@@ -114,13 +114,13 @@
 
         [data-theme="dark"] .page-item.disabled .page-link {
           color: #8a8a8a;
-          background-color: #151515;
-          border-color: #5a5a5a;
+          background-color: #2f353a;
+          border-color: #424242;
         }
 
         [data-theme="dark"] .page-link {
-          background-color: #151515;
-          border-color: #5a5a5a;
+          background-color: #343a40;
+          border-color: #464646;
         }
 
         [data-theme="dark"] .page-item.active .page-link {
@@ -137,7 +137,7 @@
 
         [data-theme="dark"] .form-control {
           border: 1px solid #464646;
-          background-color: #151515;
+          background-color: #343a40;
           color: #bfbfbf;
         }
 
