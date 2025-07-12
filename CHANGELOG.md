@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.1.5 - 2025-07-25
-- Upd phpdoc
+- Upd dark theme view
 
 ## 1.1.4 - 2025-07-22
 - Upd phpdoc
