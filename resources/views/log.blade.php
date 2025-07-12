@@ -123,6 +123,11 @@
           border-color: #464646;
         }
 
+        [data-theme="dark"] .btn-outline-dark {
+            color: lightgrey;
+            border-color: lightgrey;
+        }
+
         [data-theme="dark"] .page-item.active .page-link {
           color: #fff;
           background-color: #0568d2;
