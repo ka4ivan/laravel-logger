@@ -65,4 +65,14 @@ return [
      * Storage path for logs
      */
     'storage_path' => env('LOGGER_STORAGE_PATH', storage_path('logs')),
+
+    /*
+     * Setting up a dark theme
+     */
+    'dark_theme' => [
+        /*
+         * Key for a dark theme in the session
+         */
+        'key' => 'lte_theme',
+    ]
 ];

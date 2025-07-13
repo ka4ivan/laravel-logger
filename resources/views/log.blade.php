@@ -51,7 +51,7 @@
         .list-group-item {
           word-break: break-word;
         }
-        
+
         .folder {
           padding-top: 15px;
         }
@@ -87,12 +87,12 @@
         */
 
         body[data-theme="dark"] {
-          background-color: #151515;
+          background-color: #343a40;
           color: #cccccc;
         }
 
         [data-theme="dark"] .list-group-item {
-          background-color: #1d1d1d;
+          background-color: #343a40;
           border-color: #444;
         }
 
@@ -114,13 +114,18 @@
 
         [data-theme="dark"] .page-item.disabled .page-link {
           color: #8a8a8a;
-          background-color: #151515;
-          border-color: #5a5a5a;
+          background-color: #2f353a;
+          border-color: #424242;
         }
 
         [data-theme="dark"] .page-link {
-          background-color: #151515;
-          border-color: #5a5a5a;
+          background-color: #343a40;
+          border-color: #464646;
+        }
+
+        [data-theme="dark"] .btn-outline-dark {
+            color: lightgrey;
+            border-color: lightgrey;
         }
 
         [data-theme="dark"] .page-item.active .page-link {
@@ -137,7 +142,7 @@
 
         [data-theme="dark"] .form-control {
           border: 1px solid #464646;
-          background-color: #151515;
+          background-color: #343a40;
           color: #bfbfbf;
         }
 
@@ -153,25 +158,42 @@
     </style>
 
     <script>
+        window.darkThemeForced = @json(session()->has(config('logger.dark_theme.key', 'lte_theme')) ? session(config('logger.dark_theme.key', 'lte_theme')) === 'dark' || config('lte3.view.dark_mode') : null);
+    </script>
+
+    <script>
         function initTheme() {
-            const darkThemeSelected =
-                localStorage.getItem('darkSwitch') !== null &&
-                localStorage.getItem('darkSwitch') === 'dark';
-            darkSwitch.checked = darkThemeSelected;
-            darkThemeSelected ? document.body.setAttribute('data-theme', 'dark') :
-            document.body.removeAttribute('data-theme');
+            const darkSwitch = document.getElementById('darkSwitch');
+
+            if (typeof window.darkThemeForced === 'boolean') {
+                darkSwitch.checked = window.darkThemeForced;
+                window.darkThemeForced
+                    ? document.body.setAttribute('data-theme', 'dark')
+                    : document.body.removeAttribute('data-theme');
+            } else {
+                const darkThemeSelected =
+                    localStorage.getItem('darkSwitch') === 'dark';
+
+                darkSwitch.checked = darkThemeSelected;
+                darkThemeSelected
+                    ? document.body.setAttribute('data-theme', 'dark')
+                    : document.body.removeAttribute('data-theme');
+            }
         }
 
         function resetTheme() {
-          if (darkSwitch.checked) {
-              document.body.setAttribute('data-theme', 'dark');
-              localStorage.setItem('darkSwitch', 'dark');
-          } else {
-              document.body.removeAttribute('data-theme');
-              localStorage.removeItem('darkSwitch');
-          }
+            const darkSwitch = document.getElementById('darkSwitch');
+
+            if (darkSwitch.checked) {
+                document.body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('darkSwitch', 'dark');
+            } else {
+                document.body.removeAttribute('data-theme');
+                localStorage.removeItem('darkSwitch');
+            }
         }
     </script>
+
 </head>
 <body>
     <div class="container-fluid">
@@ -319,10 +341,10 @@
                     @endif
                     @endif
 
-                        <div class="custom-control custom-switch" style="padding-top:20px;">
-                            <input type="checkbox" class="custom-control-input" id="darkSwitch">
-                            <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px; font-size: 15px;">Dark Mode</label>
-                        </div>
+                    <div class="custom-control custom-switch @if(session()->has(config('logger.dark_theme.key', 'lte_theme'))) d-none @endif" style="padding-top:20px;">
+                        <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                        <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px; font-size: 15px;">Dark Mode</label>
+                    </div>
                 </div>
             </div>
         </div>
