@@ -156,9 +156,9 @@ class Article extends Model
 ```  
 It has the following structure:
 
-<img width="1203" height="536" alt="image" src="https://github.com/user-attachments/assets/6ce537eb-e690-4a85-ab34-b46b300a9188" />
-<img width="1203" height="390" alt="image" src="https://github.com/user-attachments/assets/8c6d36e9-5493-4d51-9ed9-ab9815fa1ec9" />
-<img width="1208" height="295" alt="image" src="https://github.com/user-attachments/assets/c1eab63d-f77b-4f61-b368-c3e0433c2721" />
+<img width="1211" height="539" alt="image" src="https://github.com/user-attachments/assets/239eb2cd-0245-453e-89bd-e4c69ee0dc3e" />
+<img width="1205" height="390" alt="image" src="https://github.com/user-attachments/assets/590b8725-5354-4587-8f5c-5868eaf311cc" />
+<img width="1205" height="291" alt="image" src="https://github.com/user-attachments/assets/91558bf8-26de-494f-b48e-7290155b3c1d" />
 
 ### Helpers
 
