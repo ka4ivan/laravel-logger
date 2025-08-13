@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0 - 2025-08-13
+- Replaced the `rap2hpoutre/laravel-log-viewer` package with `opcodesio/log-viewer` as the base for log viewing
+- Removed all configurations related to `rap2hpoutre/laravel-log-viewer`
+- Simplified logging workflow
+- Updated text for model change tracking
+- Removed IP and USER logging from standard logging
+
 ## 1.1.5 - 2025-07-25
 - Upd dark theme view
 
