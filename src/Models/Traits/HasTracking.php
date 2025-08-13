@@ -23,15 +23,11 @@ trait HasTracking
 
     protected static function bootHasTracking()
     {
-        $url = request()->url();
-        $ip = request()->ip();
-        $user = auth()->user() ?: request()->user();
-
-        static::creating(function($model) use ($url, $ip, $user) {
-            Llog::track($model, 'created', $url, $ip, $user, ['model' => $model]);
+        static::creating(function($model) {
+            Llog::track($model, 'created', request()->url(), request()->ip(), auth()->user() ?: request()->user(), ['model' => $model->toArray()]);
         });
 
-        static::updating(function ($model) use ($url, $ip, $user) {
+        static::updating(function ($model) {
             $changes = $model->getDirty();
 
             if (!empty($model->untrackedAttributes) && empty(array_diff(array_keys($changes), $model->untrackedAttributes))) {
@@ -43,12 +39,12 @@ trait HasTracking
             ])->all();
 
             if ($modelChanges) {
-                Llog::track($model, 'updated', $url, $ip, $user, ['changes' => $modelChanges]);
+                Llog::track($model, 'updated', request()->url(), request()->ip(), auth()->user() ?: request()->user(), ['changes' => $modelChanges]);
             }
         });
 
-        static::deleting(function($model) use ($url, $ip, $user) {
-            Llog::track($model, 'deleted', $url, $ip, $user);
+        static::deleting(function($model) {
+            Llog::track($model, 'deleted', request()->url(), request()->ip(), auth()->user() ?: request()->user());
         });
     }
 }

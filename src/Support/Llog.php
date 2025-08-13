@@ -141,7 +141,7 @@ class Llog extends AbstractLogger implements LoggerInterface
         $channel = config('logger.tracking.default');
 
         $logData = array_merge($context, [
-            'data' => [
+            'meta' => [
                 'url' => $url ?? request()->fullUrl(),
                 'ip' => $ip ?? request()->ip(),
                 'user' => $user?->only(config('logger.user.fields')),
@@ -150,7 +150,7 @@ class Llog extends AbstractLogger implements LoggerInterface
 
         $this->logger->channel($channel)->log(
             LogLevel::INFO,
-            ucfirst($model->getMorphClass()) . " was {$action} with id: {$model->getKey()}",
+            ucfirst($model->getMorphClass()) . " was {$action} with {$model->getKeyName()}: {$model->getKey()}",
             $logData
         );
     }
