@@ -12,16 +12,17 @@
             "homepage": "https://github.com/ka4ivan"
         },
         {
-            "name": "Raphaël Huchet",
+            "name": "opcodesio",
             "role": "Log Viewer Base",
-            "homepage": "https://github.com/rap2hpoutre"
+            "homepage": "https://github.com/opcodesio"
         }
     ],
     "type": "library",
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "illuminate/support": "^9.0|^10.0|^11.0|^12.0"
+        "illuminate/support": "^9.0|^10.0|^11.0|^12.0",
+        "opcodesio/log-viewer": "^2.0"
     },
     "autoload": {
         "psr-4": {
