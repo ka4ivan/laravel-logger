@@ -49,32 +49,49 @@ Here’s the default `config` file for reference:
 <?php
 
 return [
+    /*
+     * Default log channel
+     *
+     * This defines the default logging channel to be used by the application.
+     * The value is retrieved from the LOG_CHANNEL environment variable.
+     */
     'default' => env('LOG_CHANNEL', 'stack'),
 
-    'tracking' => [  
-        'default' => 'tracking',  
-    ],  
+    /*
+     * Tracking logs configuration
+     */
+    'tracking' => [
+        /*
+         * Defines the default logging channel for tracking events.
+         */
+        'default' => 'tracking',
+    ],
 
-    'user' => [  
-        'fields' => ['id', 'email', 'name'],  
-    ],  
+    'user' => [
+        /*
+         * Specifies which fields from the authenticated user should be included in the logs.
+         */
+        'fields' => ['id', 'email', 'name'],
+    ],
 
-    'channels' => [  
-        'tracking' => [  
-            'driver' => 'daily',  
-            'path' => storage_path('logs/_tracking.log'),  
-            'level' => env('LOG_LEVEL', 'debug'),  
-            'days' => 30,  
-            'active' => env('LOGGING_ROUTES_ACTIVE', true),  
-        ],  
-    ],  
-
-    'max_file_size' => 52428800, // 50MB  
-
-    'pattern' => env('LOGGER_PATTERN', '*.log'),  
-
-    'storage_path' => env('LOGGER_STORAGE_PATH', storage_path('logs')),  
-];  
+    /*
+     * Log channels configuration
+     *
+     * Defines different logging channels with their respective settings.
+     */
+    'channels' => [
+        /*
+         * Tracking log channels
+         */
+        'tracking' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/_tracking.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+            'active' => env('LOGGING_ROUTES_ACTIVE', true),
+        ],
+    ],
+];
 ```  
 
 ## Usage
@@ -96,7 +113,7 @@ Llog::warning('Something happened', [
 ]);  
 ```  
 
-![image](https://github.com/user-attachments/assets/06133276-fd7b-4516-a156-9f5a7ea945d6)
+<img width="1222" height="231" alt="image" src="https://github.com/user-attachments/assets/20b05915-86b3-4c7e-98f5-98f6c24757e3" />
 
 Or without a message:
 ```php
@@ -108,7 +125,7 @@ Llog::info([
     'second' => Brand::find('16df9b24-52f3-4d39-9d96-ae24b6ad3a6a'),  
 ]);  
 ```
-![image](https://github.com/user-attachments/assets/44701f42-683c-4711-9308-bce4f3592f77)
+<img width="1222" height="374" alt="image" src="https://github.com/user-attachments/assets/9635f0c5-2e42-483c-8c1e-264d4dc3ab0f" />
 
 ### Logging Methods
 
@@ -139,7 +156,9 @@ class Article extends Model
 ```  
 It has the following structure:
 
-![image](https://github.com/user-attachments/assets/72429916-bd85-4ec2-90cf-1f8960e5b1f3)
+<img width="1203" height="536" alt="image" src="https://github.com/user-attachments/assets/6ce537eb-e690-4a85-ab34-b46b300a9188" />
+<img width="1203" height="390" alt="image" src="https://github.com/user-attachments/assets/8c6d36e9-5493-4d51-9ed9-ab9815fa1ec9" />
+<img width="1208" height="295" alt="image" src="https://github.com/user-attachments/assets/c1eab63d-f77b-4f61-b368-c3e0433c2721" />
 
 ### Helpers
 
