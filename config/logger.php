@@ -21,11 +21,6 @@ return [
 
     'user' => [
         /*
-         * Fields that will be shown.
-         */
-        'visible_fields' => ['email'],
-
-        /*
          * Specifies which fields from the authenticated user should be included in the logs.
          */
         'fields' => ['id', 'email', 'name'],
@@ -48,31 +43,4 @@ return [
             'active' => env('LOGGING_ROUTES_ACTIVE', true),
         ],
     ],
-
-    /*
-     * Maximum log file size in Bytes
-     */
-    'max_file_size' => 52428800, // 50MB
-
-    /*
-     * Log file pattern
-     *
-     * Specifies the pattern used to match log files in storage.
-     */
-    'pattern' => env('LOGGER_PATTERN', '*.log'),
-
-    /*
-     * Storage path for logs
-     */
-    'storage_path' => env('LOGGER_STORAGE_PATH', storage_path('logs')),
-
-    /*
-     * Setting up a dark theme
-     */
-    'dark_theme' => [
-        /*
-         * Key for a dark theme in the session
-         */
-        'key' => 'lte_theme',
-    ]
 ];

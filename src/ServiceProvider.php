@@ -17,7 +17,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot(): void
     {
         $this->publishConfig();
-        $this->publishView();
     }
 
     /**
@@ -52,14 +51,5 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/logger.php' => config_path('logger.php'),
         ], 'logger');
-    }
-
-    protected function publishView(): void
-    {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-logger');
-
-        $this->publishes([
-            __DIR__ . '/../resources/views' => base_path('/resources/views/vendor/laravel-logger'),
-        ], 'views');
     }
 }
