@@ -33,13 +33,23 @@ composer require ka4ivan/laravel-logger
 php artisan vendor:publish --provider="Ka4ivan\LaravelLogger\ServiceProvider"
 ```
 
+3️⃣ Publish `opcodesio/log-viewer` (if this has not been done before):  
+```shell  
+php artisan log-viewer:publish
+```
+
 This command publishes:
 - Configuration file
 - Views
 
-3️⃣ Add a route to your `web.php` file:  
+4️⃣ Add a route to your `web.php` file:  
 ```php  
 Route::get('logs', [\Ka4ivan\LaravelLogger\Http\Controllers\LogViewerController::class, 'index'])->name('logs');
+```
+
+Optionally, you can publish the configs for the `opcodesio/log-viewer` package.
+```php
+php artisan vendor:publish --tag="log-viewer-config"
 ```
 
 ### 🔧 Default Configuration
