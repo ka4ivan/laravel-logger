@@ -13,7 +13,7 @@
         },
         {
             "name": "opcodesio",
-            "role": "Log Viewer Base",
+            "role": "Log Viewer",
             "homepage": "https://github.com/opcodesio"
         }
     ],
