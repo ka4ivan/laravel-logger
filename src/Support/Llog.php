@@ -140,19 +140,18 @@ class Llog extends AbstractLogger implements LoggerInterface
     ): void {
         $channel = config('logger.tracking.default');
 
-        $logData = [
-            'id' => $model->getKey(),
-            'model' => ucfirst($model->getMorphClass()),
-            'action' => $action,
-            'url' => $url ?? request()->fullUrl(),
-            'ip' => $ip ?? request()->ip(),
-            'user' => $user?->only(config('logger.user.fields')),
-            'data' => $context,
-        ];
+        $logData = array_merge($context, [
+            'data' => [
+                'url' => $url ?? request()->fullUrl(),
+                'ip' => $ip ?? request()->ip(),
+                'user' => $user?->only(config('logger.user.fields')),
+            ]
+        ]);
 
         $this->logger->channel($channel)->log(
             LogLevel::INFO,
-            json_encode($logData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            ucfirst($model->getMorphClass()) . " was {$action} with id: {$model->getKey()}",
+            $logData
         );
     }
 
@@ -171,21 +170,16 @@ class Llog extends AbstractLogger implements LoggerInterface
         $context = is_array($messageArray) ? array_merge($context, $messageArray) : $context;
 
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
-
         $caller = $backtrace[2] ?? null;
         $callerMethod = $backtrace[3] ?? null;
+        $callerText = $caller ? "{$caller['file']}:{$callerMethod['function']} line {$caller['line']}" : 'unknown';
 
-        $logData = [
-            'message' => $logMessage,
-            'caller' => $caller ? "{$caller['file']}:{$callerMethod['function']} line {$caller['line']}" : 'unknown',
-            'data' => $context,
-            'ip' => request()->ip(),
-            'user' => auth()->user()?->only(config('logger.user.fields')),
-        ];
+        $logMessage = $logMessage ? $logMessage . " at {$callerText}" : $callerText;
 
         $this->logger->channel($channel)->log(
             $level,
-            json_encode($logData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            $logMessage ?: $callerText,
+            $context
         );
     }
 }
