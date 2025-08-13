@@ -8,7 +8,7 @@
 # Laravel Logger 📦
 A Laravel package for advanced logging, providing structured logs and tracking model changes
 
-<img width="1000" height="635" alt="image" src="https://github.com/user-attachments/assets/a703298a-736c-430b-b22e-2b80411b8a44" />
+<img width="1918" height="906" alt="image" src="https://github.com/user-attachments/assets/9d1e8646-cbda-4150-9870-6a0a43ab2cbe" />
 
 ## 📖 Table of Contents
 - [Installation](#installation)
