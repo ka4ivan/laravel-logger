@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1 - 2025-08-18
+- `opcodesio/log-viewer` v3.x
+
 ## 2.0.0 - 2025-08-13
 - Replaced the `rap2hpoutre/laravel-log-viewer` package with `opcodesio/log-viewer` as the base for log viewing
 - Removed all configurations related to `rap2hpoutre/laravel-log-viewer`
