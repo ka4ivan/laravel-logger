@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2 - 2025-08-19
+- refactor
+
 ## 2.0.1 - 2025-08-18
 - `opcodesio/log-viewer` v3.x
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ka4ivan\LaravelLogger\Models\Traits;
 
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
 use Ka4ivan\LaravelLogger\Facades\Llog;
 
 trait HasTracking
@@ -24,7 +26,12 @@ trait HasTracking
     protected static function bootHasTracking()
     {
         static::creating(function($model) {
-            Llog::track($model, 'created', request()->url(), request()->ip(), auth()->user() ?: request()->user(), ['model' => $model->toArray()]);
+            Llog::track($model, 'created',
+                Request::url(),
+                Request::ip(),
+                Auth::user() ?: Request::user(),
+                ['model' => $model->toArray()]
+            );
         });
 
         static::updating(function ($model) {
@@ -39,12 +46,21 @@ trait HasTracking
             ])->all();
 
             if ($modelChanges) {
-                Llog::track($model, 'updated', request()->url(), request()->ip(), auth()->user() ?: request()->user(), ['changes' => $modelChanges]);
+                Llog::track($model, 'updated',
+                    Request::url(),
+                    Request::ip(),
+                    Auth::user() ?: Request::user(),
+                    ['changes' => $modelChanges]
+                );
             }
         });
 
         static::deleting(function($model) {
-            Llog::track($model, 'deleted', request()->url(), request()->ip(), auth()->user() ?: request()->user());
+            Llog::track($model, 'deleted',
+                Request::url(),
+                Request::ip(),
+                Auth::user() ?: Request::user()
+            );
         });
     }
 }

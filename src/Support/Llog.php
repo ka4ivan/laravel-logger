@@ -165,7 +165,7 @@ class Llog extends AbstractLogger implements LoggerInterface
     protected function writeLog(string $level, string|array $message = null, array $context = []): void
     {
         $channel = config('logger.default');
-        $messageArray = is_array($message) ? $message : json_decode($message, true);
+        $messageArray = is_array($message) ? $message : json_decode($message ?? '', true);
         $logMessage = is_array($messageArray) ? '' : $message;
         $context = is_array($messageArray) ? array_merge($context, $messageArray) : $context;
 
@@ -174,7 +174,7 @@ class Llog extends AbstractLogger implements LoggerInterface
         $callerMethod = $backtrace[3] ?? null;
         $callerText = $caller ? "{$caller['file']}:{$callerMethod['function']} line {$caller['line']}" : 'unknown';
 
-        $logMessage = $logMessage ? $logMessage . " at {$callerText}" : $callerText;
+        $logMessage = ($logMessage && is_string($logMessage)) ? $logMessage . " at {$callerText}" : $callerText;
 
         $this->logger->channel($channel)->log(
             $level,
