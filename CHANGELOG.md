@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.- - 2025-12-17
+## 3.0.0 - 2025-12-17
 - Return `rap2hpoutre/laravel-log-viewer`
 - Add `channel`
 - optimize and fix bugs
