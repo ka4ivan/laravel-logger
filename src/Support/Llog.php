@@ -13,10 +13,12 @@ class Llog extends AbstractLogger implements LoggerInterface
      * @var LoggerInterface $logger
      */
     protected LoggerInterface $logger;
+    protected ?string $channel = null;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, ?string $channel)
     {
         $this->logger = $logger;
+        $this->channel = $channel;
     }
 
     /**
@@ -138,7 +140,7 @@ class Llog extends AbstractLogger implements LoggerInterface
         ?Model $user = null,
         array $context = []
     ): void {
-        $channel = config('logger.tracking.default');
+        $channel = $this->channel ?? config('logger.tracking.default');
 
         $logData = [
             'id' => $model->getKey(),
@@ -157,6 +159,19 @@ class Llog extends AbstractLogger implements LoggerInterface
     }
 
     /**
+     * Sets the logging channel used for subsequent log entries.
+     *
+     * @param string $channel
+     * @return Llog
+     */
+    public function channel(string $channel): self
+    {
+        $this->channel = $channel;
+
+        return $this;
+    }
+
+    /**
      * Logs a message with a given severity level.
      *
      * @param string $level The log level (e.g., 'info', 'error', 'debug').
@@ -165,7 +180,7 @@ class Llog extends AbstractLogger implements LoggerInterface
      */
     protected function writeLog(string $level, string|array $message = null, array $context = []): void
     {
-        $channel = config('logger.default');
+        $channel = $this->channel ?? config('logger.default');
         $messageArray = is_array($message) ? $message : json_decode($message, true);
         $logMessage = is_array($messageArray) ? '' : $message;
         $context = is_array($messageArray) ? array_merge($context, $messageArray) : $context;
