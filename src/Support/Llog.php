@@ -15,10 +15,9 @@ class Llog extends AbstractLogger implements LoggerInterface
     protected LoggerInterface $logger;
     protected ?string $channel = null;
 
-    public function __construct(LoggerInterface $logger, ?string $channel)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
-        $this->channel = $channel;
     }
 
     /**
