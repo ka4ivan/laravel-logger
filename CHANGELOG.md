@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Fix `channel()` sticking to the shared facade instance: later calls without a channel no longer go to the last used channel
+
 ## 3.0.2 - 2026-06-18
 - Laravel 13 support
 

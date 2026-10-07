@@ -158,16 +158,20 @@ class Llog extends AbstractLogger implements LoggerInterface
     }
 
     /**
-     * Sets the logging channel used for subsequent log entries.
+     * Returns a logger bound to the given channel.
+     *
+     * A clone is returned so the channel does not stick to the shared facade instance
+     * and leak into later calls without an explicit channel.
      *
      * @param string $channel
      * @return Llog
      */
     public function channel(string $channel): self
     {
-        $this->channel = $channel;
+        $logger = clone $this;
+        $logger->channel = $channel;
 
-        return $this;
+        return $logger;
     }
 
     /**
